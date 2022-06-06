@@ -38,6 +38,7 @@ int search(int *ht, int key);
 
 int main()
 {
+	printf("----- 허정윤 2021041047 -----\n");
 	char command;
 	int *array = NULL;
 	int *hashtable = NULL;
@@ -325,6 +326,7 @@ int quickSort(int *a, int n)
 }
 
 int hashCode(int key) {
+	//정해둔 사이즈로 key 값에 나머지 연산을 한다.
    return key % MAX_HASH_TABLE_SIZE;
 }
 
@@ -340,6 +342,7 @@ int hashing(int *a, int **ht)
 		hashtable = *ht;	/* hash table이 NULL이 아닌경우, table 재활용, reset to -1 */
 	}
 
+	//key값이 되면 안되므로 모든 값을 -1로 초기화.
 	for(int i = 0; i < MAX_HASH_TABLE_SIZE; i++)
 		hashtable[i] = -1;
 
@@ -351,27 +354,36 @@ int hashing(int *a, int **ht)
 	int key = -1;
 	int hashcode = -1;
 	int index = -1;
+
 	for (int i = 0; i < MAX_ARRAY_SIZE; i++)
 	{
+		//a의 값을 key로 받아서 hashcode를 만든다.
 		key = a[i];
 		hashcode = hashCode(key);
 		/*
 		printf("key = %d, hashcode = %d, hashtable[%d]=%d\n", key, hashcode, hashcode, hashtable[hashcode]);
 		*/
+		//hashtable에 hashcode를 인덱스로 찾은 값이 -1이면(지정되지 않음) key 값을 넣어준다
 		if (hashtable[hashcode] == -1)
 		{
 			hashtable[hashcode] = key;
+		//그렇지 않으면
 		} else 	{
-
+			//hashcode를 index로 받고
 			index = hashcode;
 
+			//지정되지 않은 칸을 찾을 때까지(종료조건)
 			while(hashtable[index] != -1)
-			{
+			{	
+				//index에 1을 더한 값을 테이블 크기값으로 나머지 연산을 한 값을
+				//index로 한다.
 				index = (++index) % MAX_HASH_TABLE_SIZE;
 				/*
 				printf("index = %d\n", index);
 				*/
 			}
+			//나왔다는 것은 지정되지 않은 칸을 찾았단 의미이므로
+			//그 칸에 key를 넣어준다.
 			hashtable[index] = key;
 		}
 	}
@@ -381,17 +393,21 @@ int hashing(int *a, int **ht)
 
 int search(int *ht, int key)
 {
+	//hashCode함수에 key를 넣어서 index를 가져온다.
 	int index = hashCode(key);
 
+	//ht(==hashtable)에 index를 넣은 값과 key가 일치하면 index 리턴.
 	if(ht[index] == key)
 		return index;
 
+	//index를 1씩 더해가며 ht[index]가 key가 아니면 계속 반복
 	while(ht[++index] != key)
 	{
+		//MAX_HASH_TABLE_SIZE로 나머지 연산.
+		//결국 key가 될때까지 0~최대사이즈까지 돌게 됨.
 		index = index % MAX_HASH_TABLE_SIZE;
 	}
+	//반복 종료는 ht[index]가 key와 일치한다는 의미
+	//리턴해줌.
 	return index;
 }
-
-
-
