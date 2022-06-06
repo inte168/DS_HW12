@@ -144,11 +144,15 @@ int freeArray(int *a)
 }
 
 void printArray(int *a)
-{
+{	
+	//a가 NULL인 경우의 에러메시지
 	if (a == NULL) {
 		printf("nothing to print.\n");
 		return;
 	}
+
+	//위에는 a[] 글자를 출력
+	//아래는 값을 출력
 	for(int i = 0; i < MAX_ARRAY_SIZE; i++)
 		printf("a[%02d] ", i);
 	printf("\n");
@@ -157,7 +161,7 @@ void printArray(int *a)
 	printf("\n");
 }
 
-
+//선택정렬
 int selectionSort(int *a)
 {
 	int min;
@@ -171,25 +175,31 @@ int selectionSort(int *a)
 
 	for (i = 0; i < MAX_ARRAY_SIZE; i++)
 	{
-		minindex = i;
-		min = a[i];
+		minindex = i; //비교군은 i번째 값부터
+		min = a[i]; //뒤에서부터 하나씩
+
+		//i 다음 값부터 비교 시작.(앞은 정렬되어있음)
 		for(j = i+1; j < MAX_ARRAY_SIZE; j++)
 		{
+			//min보다 작은 값을 만나면
 			if (min > a[j])
 			{
+				//min 값과 index를 바꿔줌
 				min = a[j];
 				minindex = j;
 			}
 		}
+		//a[minindex]는 결국 min이라 a[minindex]와 a[i]의 값을 swap한 결과물이 된다.
 		a[minindex] = a[i];
 		a[i] = min;
 	}
-
+	//줄긋고 출력.
 	printf("----------------------------------------------------------------\n");
 	printArray(a);
 	return 0;
 }
 
+//삽입정렬
 int insertionSort(int *a)
 {
 	int i, j, t;
@@ -198,19 +208,23 @@ int insertionSort(int *a)
 	printf("----------------------------------------------------------------\n");
 
 	printArray(a);
-
+	//앞에서 부터 훑기
 	for(i = 1; i < MAX_ARRAY_SIZE; i++)
 	{
 		t = a[i];
 		j = i;
+		//a[j-1]이 큰 경우는 계속 a[j]를 밖으로 한칸 옮기고, j는 1 빼줌.
 		while (a[j-1] > t && j > 0)
 		{
 			a[j] = a[j-1];
 			j--;
 		}
+		//이때는 a[j-1]<t이거나 j가 0이 되버렸거나.(이때는 모든 값들이 t보다 크다는 의미.)
+		//이때 j에다가 t를 넣어준다.
 		a[j] = t;
 	}
 
+	//줄긋고 출력.
 	printf("----------------------------------------------------------------\n");
 	printArray(a);
 
